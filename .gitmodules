@@ -1,0 +1,3 @@
+[submodule "IMS_Packets_Core"]
+	path = IMS_Packets_Core
+	url = https://github.com/InMechaSol/IMS_Packets_Core.git

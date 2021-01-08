@@ -29,11 +29,11 @@ protected:
 
 	void	CustomLoop() { ; }
 
-	void	VERSION_Handler(Packet_Version* inPack) 
+	void	Handler_VERSION(Packet_VERSION* inPack) 
 	{ 
 		VERSION_Handler_template<SPD4>(inPack, this);
 	}
-	bool	VERSION_Packager(Packet_Version* outPack) 
+	bool	Packager_VERSION(Packet_VERSION* outPack)
 	{ 
 		return VERSION_Packager_template<SPD4>(outPack, this, API_NODE::ECOSYSTEM_MajorVersion, API_NODE::ECOSYSTEM_MinorVersion, API_NODE::ECOSYSTEM_BuildNumber, ECOSYSTEM_isReleaseBuild);
 	}

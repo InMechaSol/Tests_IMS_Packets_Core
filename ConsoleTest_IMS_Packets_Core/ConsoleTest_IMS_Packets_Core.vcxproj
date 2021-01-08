@@ -152,6 +152,7 @@
     <ClInclude Include="..\IMS_Packets_Core\1_LanguageConstructs.h" />
     <ClInclude Include="..\IMS_Packets_Core\2_PacketPortLink.h" />
     <ClInclude Include="..\IMS_Packets_Core\3_APINodeLink.h" />
+    <ClInclude Include="..\IMS_Packets_Core\0_EcoSystemVersions.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

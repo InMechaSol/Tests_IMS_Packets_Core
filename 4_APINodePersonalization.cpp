@@ -31,14 +31,16 @@ protected:
 
 	void	VERSION_Handler(Packet_Version* inPack) 
 	{ 
-		// if in pack is a read packet
-		//switch(inPack->getPacketType(,))
-		setVersionPackTrigger();
+		VERSION_Handler_template<SPD4>(inPack, this);
 	}
-	void	VERSION_Packager(Packet_Version* outPack) { ; }
+	bool	VERSION_Packager(Packet_Version* outPack) 
+	{ 
+		return VERSION_Packager_template<SPD4>(outPack, this, API_NODE::ECOSYSTEM_MajorVersion, API_NODE::ECOSYSTEM_MinorVersion, API_NODE::ECOSYSTEM_BuildNumber, ECOSYSTEM_isReleaseBuild);
+	}
 
-	bool	API_CustomShared_PrepareTx(HDR_Packet* TxPackOutPtr) { return false; }  
-	void	API_CustomShared_HandleRx(HDR_Packet* RxPackInPtr) { ; }
+
+	bool	API_CustomShared_PrepareTx(Packet* TxPackOutPtr) { return false; }  
+	void	API_CustomShared_HandleRx(Packet* RxPackInPtr) { ; }
 
 };
 

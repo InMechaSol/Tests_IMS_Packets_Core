@@ -10,6 +10,7 @@ int main()
     while (true)
     {
         theTestNode.Loop();
+        std::this_thread::yield();
     }
     
 }

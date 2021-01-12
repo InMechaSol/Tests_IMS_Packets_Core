@@ -20,22 +20,22 @@ using namespace IMSPacketsAPICore;
 	be used to derive application nodes and define specific api endpoint functions.
 
 */
+template<class TokenType>
 class Test_API_Node_Default : public API_NODE
 {
 public:
 	Test_API_Node_Default() :API_NODE() { ; }
-	void	Setup() { ; }
 protected:
 
 	void	CustomLoop() { ; }
 
-	void	Handler_VERSION(Packet_VERSION* inPack) 
+	void	Handler_VERSION(pCLASS(VERSION)* inPack) 
 	{ 
-		VERSION_Handler_template<SPD4>(inPack, this);
+		API_NODE::VERSION_Handler_template<TokenType>(inPack, this);
 	}
-	bool	Packager_VERSION(Packet_VERSION* outPack)
+	bool	Packager_VERSION(pCLASS(VERSION)* outPack)
 	{ 
-		return VERSION_Packager_template<SPD4>(outPack, this, API_NODE::ECOSYSTEM_MajorVersion, API_NODE::ECOSYSTEM_MinorVersion, API_NODE::ECOSYSTEM_BuildNumber, ECOSYSTEM_isReleaseBuild);
+		return API_NODE::VERSION_Packager_template<TokenType>(outPack, this, API_NODE::ECOSYSTEM_MajorVersion, API_NODE::ECOSYSTEM_MinorVersion, API_NODE::ECOSYSTEM_BuildNumber, !ECOSYSTEM_isReleaseBuild);
 	}
 
 
@@ -45,11 +45,11 @@ protected:
 };
 
 // define interface functions (*link the stream)
-class TestASCIIConsole_InputInterface :public PacketInterface_ASCII<SPD4>
+class Test_std_cin_Interface :public PacketInterface_ASCII
 {
 public:
-	TestASCIIConsole_InputInterface(std::istream* ifaceInStreamPtrIn = nullptr) :
-		PacketInterface_ASCII<SPD4>(ifaceInStreamPtrIn) { 
+	Test_std_cin_Interface(std::istream* ifaceInStreamPtrIn = nullptr) :
+		PacketInterface_ASCII(ifaceInStreamPtrIn) { 
 		BufferPacket.setCharsBuffer(&(TokenBuffer.chars[0])); 
 	}
 	void CustomReadFrom()
@@ -62,11 +62,11 @@ public:
 	}
 };
 
-class TestASCIIConsole_OutputInterface :public PacketInterface_ASCII<SPD4>
+class Test_std_cout_Interface :public PacketInterface_ASCII
 {
 public:
-	TestASCIIConsole_OutputInterface(std::ostream* ifaceOutStreamPtrIn = nullptr) :
-		PacketInterface_ASCII<SPD4>(ifaceOutStreamPtrIn) {
+	Test_std_cout_Interface(std::ostream* ifaceOutStreamPtrIn = nullptr) :
+		PacketInterface_ASCII(ifaceOutStreamPtrIn) {
 		BufferPacket.setCharsBuffer(&(TokenBuffer.chars[0]));
 	}
 	void CustomWriteTo()

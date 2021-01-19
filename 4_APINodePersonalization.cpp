@@ -1,83 +1,62 @@
-#include "3_APINodeLink.h"
+#include "4_APINodePersonalization.h"
 
 using namespace IMSPacketsAPICore;
 
-/*! \defgroup APINodePersonalization
-	@{
-*/
-/*! \class Test_API_Node_Default
-	\brief An Example with Default Configuration
+template class Test_API_Node_Default<SPD1>;
+template class Test_API_Node_Default<SPD2>;
+template class Test_API_Node_Default<SPD4>;
+template class Test_API_Node_Default<SPD8>;
 
-	System developer would first define a common node language and api endpoints.
-	Through Selection of Packet Port Type and Input/Output Interface Combinations,
-	default features can be used to exchange packets and execute api endpoints.
-
-	This test node is an example of enterprise level (system level) node definition
-	intended to be designed and implemented by system developers.
-
-	In particular, this node is an example with no customization, only default features.
-	This test node defines the base cross-platform node structure to then
-	be used to derive application nodes and define specific api endpoint functions.
-
-*/
 template<class TokenType>
-class Test_API_Node_Default : public API_NODE
+Test_API_Node_Default<TokenType>::Test_API_Node_Default() :API_NODE() { ; }
+
+template<class TokenType>
+void	Test_API_Node_Default<TokenType>::CustomLoop() { ; }
+
+template<class TokenType>
+void	Test_API_Node_Default<TokenType>::Handler_VERSION(pCLASS(VERSION)* inPack)
 {
-public:
-	Test_API_Node_Default() :API_NODE() { ; }
-protected:
+	API_NODE::staticHandler_VERSION<TokenType>(inPack, this);
+}
 
-	void	CustomLoop() { ; }
-
-	void	Handler_VERSION(pCLASS(VERSION)* inPack) 
-	{ 
-		API_NODE::VERSION_Handler_template<TokenType>(inPack, this);
-	}
-	bool	Packager_VERSION(pCLASS(VERSION)* outPack)
-	{ 
-		return API_NODE::VERSION_Packager_template<TokenType>(outPack, this, API_NODE::ECOSYSTEM_MajorVersion, API_NODE::ECOSYSTEM_MinorVersion, API_NODE::ECOSYSTEM_BuildNumber, !ECOSYSTEM_isReleaseBuild);
-	}
-
-
-	bool	API_CustomShared_PrepareTx(Packet* TxPackOutPtr) { return false; }  
-	void	API_CustomShared_HandleRx(Packet* RxPackInPtr) { ; }
-
-};
-
-// define interface functions (*link the stream)
-class Test_std_cin_Interface :public PacketInterface_ASCII
+template<class TokenType>
+bool	Test_API_Node_Default<TokenType>::Packager_VERSION(pCLASS(VERSION)* outPack)
 {
-public:
-	Test_std_cin_Interface(std::istream* ifaceInStreamPtrIn = nullptr) :
-		PacketInterface_ASCII(ifaceInStreamPtrIn) { 
-		BufferPacket.setCharsBuffer(&(TokenBuffer.chars[0])); 
-	}
-	void CustomReadFrom()
-	{
-		ReadFromStream_ASCII(this, &std::cin);
-	}
-	bool DeSerializePacket() 
-	{ 
-		return DeSerializePacket_ASCII(this);
-	}
-};
+	struct pSTRUCT(VERSION) theEcoSysVersion;
+	theEcoSysVersion.Major = ECOSYSTEM_MajorVersion;
+	theEcoSysVersion.Minor = ECOSYSTEM_MinorVersion;
+	theEcoSysVersion.Build = ECOSYSTEM_BuildNumber;
+	theEcoSysVersion.DevFlag = !ECOSYSTEM_isReleaseBuild;
+	return API_NODE::staticPackager_VERSION<TokenType>(outPack, this, &theEcoSysVersion);
+}
+template<class TokenType>
+bool	Test_API_Node_Default<TokenType>::API_CustomShared_PrepareTx(Packet* TxPackOutPtr) { return false; }
 
-class Test_std_cout_Interface :public PacketInterface_ASCII
+template<class TokenType>
+void	Test_API_Node_Default<TokenType>::API_CustomShared_HandleRx(Packet* RxPackInPtr) { ; }
+
+Test_std_cin_Interface::Test_std_cin_Interface(int PortIDin, std::istream* ifaceInStreamPtrIn) :
+	PacketInterface_ASCII(PortIDin, ifaceInStreamPtrIn) {
+	BufferPacket.setCharsBuffer(&(TokenBuffer.chars[0]));
+}
+void Test_std_cin_Interface::CustomReadFrom()
 {
-public:
-	Test_std_cout_Interface(std::ostream* ifaceOutStreamPtrIn = nullptr) :
-		PacketInterface_ASCII(ifaceOutStreamPtrIn) {
-		BufferPacket.setCharsBuffer(&(TokenBuffer.chars[0]));
-	}
-	void CustomWriteTo()
-	{
-		WriteToStream_ASCII(this, &std::cout);
-	}
-	bool SerializePacket() 
-	{ 
-		return SerializePacket_ASCII(this); 
-	}
-};
+	ReadFromStream_ASCII(this, &std::cin);
+}
+bool Test_std_cin_Interface::DeSerializePacket()
+{
+	return DeSerializePacket_ASCII(this);
+}
 
-
-/*! @}*/
+Test_std_cout_Interface::Test_std_cout_Interface(int PortIDin, std::ostream* ifaceOutStreamPtrIn) :
+	PacketInterface_ASCII(PortIDin, ifaceOutStreamPtrIn) {
+	BufferPacket.setCharsBuffer(&(TokenBuffer.chars[0]));
+}
+void Test_std_cout_Interface::CustomWriteTo()
+{
+	WriteToStream_ASCII(this, &std::cout);
+}
+bool Test_std_cout_Interface::SerializePacket()
+{
+	return SerializePacket_ASCII(this);
+}

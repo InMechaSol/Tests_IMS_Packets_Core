@@ -145,14 +145,23 @@
   <ItemGroup>
     <ClCompile Include="..\4_APINodePersonalization.cpp" />
     <ClCompile Include="..\5_IntendedUseTesting.cpp" />
+    <ClCompile Include="..\IMS_Packets_Core\1_LanguageConstructs.cpp" />
+    <ClCompile Include="..\IMS_Packets_Core\2_PacketPortLink.cpp" />
+    <ClCompile Include="..\IMS_Packets_Core\3_APINodeLink.cpp" />
+    <ClCompile Include="..\IMS_Packets_Core\3_Packet_HDRPACK.cpp" />
+    <ClCompile Include="..\IMS_Packets_Core\3_Packet_VERSION.cpp" />
     <ClCompile Include="ConsoleTest_IMS_Packets_Core.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\4_APINodePersonalization.h" />
+    <ClInclude Include="..\5_IntendedUseTesting.h" />
     <ClInclude Include="..\IMS_Packets_Core\0_EcoSystemRestrictions.h" />
     <ClInclude Include="..\IMS_Packets_Core\1_LanguageConstructs.h" />
     <ClInclude Include="..\IMS_Packets_Core\2_PacketPortLink.h" />
     <ClInclude Include="..\IMS_Packets_Core\3_APINodeLink.h" />
     <ClInclude Include="..\IMS_Packets_Core\0_EcoSystemVersions.h" />
+    <ClInclude Include="..\IMS_Packets_Core\3_Packet_HDRPACK.h" />
+    <ClInclude Include="..\IMS_Packets_Core\3_Packet_VERSION.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

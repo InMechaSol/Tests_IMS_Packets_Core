@@ -18,101 +18,58 @@
 	- Application developers would then define application nodes which rely on the definitions of common node language and api endpoints.
 
 */
-#include "4_APINodePersonalization.cpp"
-#include <thread>
+#include "5_IntendedUseTesting.h"
+
 
 using namespace IMSPacketsAPICore;
-/*! \defgroup IntendedUseTesting
-	@{
-*/
-class CoreTest_STDIOThread_SPD4Node : public Test_API_Node_Default<SPD4>
+#include "5_IntendedUseTesting.h"
+using namespace IMSPacketsAPICore;
+
+CoreTest_STDIOThread_SPD4Node::CoreTest_STDIOThread_SPD4Node() :
+	Test_API_Node_Default<SPD4>(),
+	ConsolePortThread(CoreTest_STDIOThread_SPD4Node::ServiceConsolePort, this) {
+	;
+}
+void CoreTest_STDIOThread_SPD4Node::ServiceConsolePort(CoreTest_STDIOThread_SPD4Node* nodePtr)
 {
-private:
-	std::thread						ConsolePortThread;
-	bool							ExitServiceThread = false;
-	bool							PortAReady = false;
-protected:
-	virtual PolymorphicPacketPort* GetConsolePort() = 0;
-
-public:
-	CoreTest_STDIOThread_SPD4Node() :
-		Test_API_Node_Default<SPD4>(),
-		ConsolePortThread(CoreTest_STDIOThread_SPD4Node::ServiceConsolePort, this) {
-		;
-	}
-	static void ServiceConsolePort(CoreTest_STDIOThread_SPD4Node* nodePtr)
+	while (!nodePtr->ExitServiceThread)
 	{
-		while (!nodePtr->ExitServiceThread)
-		{
-			if (nodePtr->PortAReady)
-				nodePtr->GetConsolePort()->ServicePort();
-			std::this_thread::yield();
-		}
+		if (nodePtr->PortAReady)
+			nodePtr->GetConsolePort()->ServicePort();
+		std::this_thread::yield();
 	}
-	void Setup()
-	{
-		PortAReady = true;
-	}
-	~CoreTest_STDIOThread_SPD4Node()
-	{
-		PortAReady = false;
-		ExitServiceThread = true;
-		ConsolePortThread.~thread();
-	}
-};
-
-// define api node with custom input/output interface instances
-class CoreTest_CustomConsole_Node :public CoreTest_STDIOThread_SPD4Node
+}
+void CoreTest_STDIOThread_SPD4Node::Setup()
 {
-protected:
-	PolymorphicPacketPort*				GetConsolePort()		{ return &TestPortA; }
-public:
-	PolymorphicPacketPort*				getPacketPortat(int i)	{ return &TestPortA; };
-	int									getNumPacketPorts()		{ return 1; }
-
-	// create custom interface instances
-	Test_std_cout_Interface		PortA_OutputIface;
-	Test_std_cin_Interface		PortA_InputIface;
-	PolymorphicPacketPort		TestPortA;
-	
-
-	CoreTest_CustomConsole_Node() :
-		CoreTest_STDIOThread_SPD4Node(),
-		PortA_OutputIface(),
-		PortA_InputIface(),
-		TestPortA(&PortA_InputIface, &PortA_OutputIface, this, true) {
-		;
-	}
-	
-
-};
-
-// define api node with default ascii spd4 serialization to/from cout/cin
-class CoreTest_Console_Node :public CoreTest_STDIOThread_SPD4Node
+	PortAReady = true;
+}
+CoreTest_STDIOThread_SPD4Node::~CoreTest_STDIOThread_SPD4Node()
 {
-protected:
-	PolymorphicPacketPort* GetConsolePort() { return &TestPortA; }
+	PortAReady = false;
+	ExitServiceThread = true;
+	ConsolePortThread.~thread();
+}
 
-private:
+PolymorphicPacketPort*	CoreTest_CustomConsole_Node::GetConsolePort() { return &TestPortA; }
+PolymorphicPacketPort*	CoreTest_CustomConsole_Node::getPacketPortat(int i) { return &TestPortA; };
+int						CoreTest_CustomConsole_Node::getNumPacketPorts() { return 1; }
 
-	// create default interface instances
-	PacketInterface_ASCII			PortA_OutputIface;
-	PacketInterface_ASCII			PortA_InputIface;
-	PolymorphicPacketPort			TestPortA;
+CoreTest_CustomConsole_Node::CoreTest_CustomConsole_Node() :
+	CoreTest_STDIOThread_SPD4Node(),
+	PortA_OutputIface(0),
+	PortA_InputIface(0),
+	TestPortA(0, &PortA_InputIface, &PortA_OutputIface, this, true) {
+	;
+}
 
 
-public:
-	CoreTest_Console_Node() :
-		CoreTest_STDIOThread_SPD4Node(),
-		TestPortA(&PortA_InputIface, &PortA_OutputIface, this, true),
-		PortA_OutputIface(&std::cout),
-		PortA_InputIface(&std::cin)	{
-		;
-	}
-
-	PolymorphicPacketPort*				getPacketPortat(int i) { return &TestPortA; };
-	int									getNumPacketPorts() { return 1; }
-
-};
-
-/*! @} */
+PolymorphicPacketPort* CoreTest_Console_Node::GetConsolePort() { return &TestPortA; }
+PolymorphicPacketPort* CoreTest_Console_Node::getPacketPortat(int i) { return &TestPortA; };
+int						CoreTest_Console_Node::getNumPacketPorts() { return 1; }
+CoreTest_Console_Node::CoreTest_Console_Node() :
+	CoreTest_STDIOThread_SPD4Node(),
+	TestPortA(0,&PortA_InputIface, &PortA_OutputIface, this, true),
+	PortA_OutputIface(0,&std::cout),
+	PortA_InputIface(0,&std::cin) {
+	;
+}

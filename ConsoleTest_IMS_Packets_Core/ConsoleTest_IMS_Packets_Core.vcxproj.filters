@@ -13,6 +13,18 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\IMSPacketsCore">
+      <UniqueIdentifier>{72e64a46-dcbe-46c0-a296-81b659cd1fe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\IMSPacketsCore\Packets">
+      <UniqueIdentifier>{3558fd72-0b26-42f6-ba20-7242282a147f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IMSPacketsCore">
+      <UniqueIdentifier>{53e534cb-a7eb-4b68-a003-83a63fc3f877}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\IMSPacketsCore\Packets">
+      <UniqueIdentifier>{685280f6-7975-4741-a127-0fbf99baed1d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConsoleTest_IMS_Packets_Core.cpp">
@@ -24,21 +36,48 @@
     <ClCompile Include="..\5_IntendedUseTesting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\IMS_Packets_Core\3_Packet_HDRPACK.cpp">
+      <Filter>Source Files\IMSPacketsCore\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMS_Packets_Core\3_Packet_VERSION.cpp">
+      <Filter>Source Files\IMSPacketsCore\Packets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMS_Packets_Core\1_LanguageConstructs.cpp">
+      <Filter>Source Files\IMSPacketsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMS_Packets_Core\2_PacketPortLink.cpp">
+      <Filter>Source Files\IMSPacketsCore</Filter>
+    </ClCompile>
+    <ClCompile Include="..\IMS_Packets_Core\3_APINodeLink.cpp">
+      <Filter>Source Files\IMSPacketsCore</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\4_APINodePersonalization.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\IMS_Packets_Core\3_Packet_HDRPACK.h">
+      <Filter>Header Files\IMSPacketsCore\Packets</Filter>
+    </ClInclude>
+    <ClInclude Include="..\IMS_Packets_Core\3_Packet_VERSION.h">
+      <Filter>Header Files\IMSPacketsCore\Packets</Filter>
+    </ClInclude>
     <ClInclude Include="..\IMS_Packets_Core\0_EcoSystemRestrictions.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\IMS_Packets_Core\1_LanguageConstructs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\IMS_Packets_Core\2_PacketPortLink.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\IMS_Packets_Core\3_APINodeLink.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\IMSPacketsCore</Filter>
     </ClInclude>
     <ClInclude Include="..\IMS_Packets_Core\0_EcoSystemVersions.h">
+      <Filter>Header Files\IMSPacketsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\IMS_Packets_Core\1_LanguageConstructs.h">
+      <Filter>Header Files\IMSPacketsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\IMS_Packets_Core\2_PacketPortLink.h">
+      <Filter>Header Files\IMSPacketsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\IMS_Packets_Core\3_APINodeLink.h">
+      <Filter>Header Files\IMSPacketsCore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\5_IntendedUseTesting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
